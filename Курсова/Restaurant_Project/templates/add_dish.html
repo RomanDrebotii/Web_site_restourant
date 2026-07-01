@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Додати страву</title>
+    <style>
+        body { font-family: sans-serif; display: flex; justify-content: center; padding-top: 50px; background: #f4f7f6; }
+        form { background: white; padding: 30px; border-radius: 10px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); width: 350px; }
+        input, select, button { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        button { background: #3498db; color: white; border: none; font-weight: bold; cursor: pointer; }
+        button:hover { background: #2980b9; }
+        h2 { text-align: center; color: #333; }
+        .hint { font-size: 0.8em; color: #666; margin-top: -8px; margin-bottom: 10px; display: block;}
+    </style>
+</head>
+<body>
+    <form method="POST" enctype="multipart/form-data">
+        <h2>➕ Нова страва</h2>
+        
+        <label>Назва страви:</label>
+        <input type="text" name="name" required placeholder="Наприклад: Чізкейк">
+
+        <label>Ціна (грн):</label>
+        <input type="number" name="price" required placeholder="150">
+
+        <label>Категорія:</label>
+        <input type="text" name="category" list="cat_list" required placeholder="Оберіть або впишіть нову...">
+        <span class="hint">💡 Почніть писати, щоб створити нову категорію (напр. Десерти)</span>
+        
+        <datalist id="cat_list">
+            {% for cat in categories %}
+                <option value="{{ cat }}">
+            {% endfor %}
+        </datalist>
+
+        <label>Фото страви:</label>
+        <input type="file" name="image" accept="image/*" required>
+
+        <button type="submit">Додати в меню</button>
+        <p style="text-align: center;"><a href="/admin">← Назад в адмінку</a></p>
+    </form>
+</body>
+</html>

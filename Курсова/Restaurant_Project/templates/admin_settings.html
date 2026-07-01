@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block content %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
+
+<style>
+    .settings-box { max-width: 500px; margin: 40px auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #2c3e50; }
+    
+    #sortable-list { list-style: none; padding: 0; margin: 20px 0; }
+    
+    .sort-item {
+        background: #f8f9fa; border: 1px solid #ddd; padding: 15px; margin-bottom: 10px;
+        border-radius: 8px; cursor: grab; display: flex; justify-content: space-between;
+        font-weight: bold; color: #34495e;
+    }
+    .sort-item:active { cursor: grabbing; background: #eef2f3; }
+    
+    .btn-save {
+        width: 100%; padding: 12px; background: #27ae60; color: white; border: none;
+        border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer;
+    }
+    .btn-save:hover { background: #219150; }
+</style>
+
+<div class="settings-box">
+    <h2>🔃 Сортування Меню</h2>
+    <p style="text-align: center; color: #777;">Перетягніть категорії мишкою:</p>
+
+    <ul id="sortable-list">
+        {% for cat in categories %}
+        <li class="sort-item" data-id="{{ cat }}">
+            <span>{{ cat }}</span>
+            <span>☰</span>
+        </li>
+        {% endfor %}
+    </ul>
+
+    <button onclick="saveOrder()" class="btn-save">Зберегти порядок</button>
+    
+    <div style="text-align: center; margin-top: 15px;">
+        <a href="/admin" style="text-decoration: none; color: #555;">← Назад</a>
+    </div>
+</div>
+
+<script>
+    // Робимо список рухомим
+    var el = document.getElementById('sortable-list');
+    var sortable = Sortable.create(el, { animation: 150 });
+
+    // Функція збереження
+    function saveOrder() {
+        var items = document.querySelectorAll('.sort-item');
+        var orderArray = [];
+        items.forEach(item => orderArray.push(item.getAttribute('data-id')));
+
+        fetch('/admin/settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ order: orderArray })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === 'success') {
+                alert('Порядок збережено!');
+                window.location.href = '/'; 
+            }
+        });
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Вхід</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #2c3e50; font-family: sans-serif; }
+        form { background: white; padding: 40px; border-radius: 10px; width: 300px; text-align: center; }
+        input { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box;}
+        button { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold;}
+        button:hover { background: #2980b9; }
+        a { color: #3498db; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        <h2>🔐 Вхід у систему</h2>
+        <input type="text" name="login" placeholder="Логін" required>
+        <input type="password" name="password" placeholder="Пароль" required>
+        <button type="submit">Увійти</button>
+        
+        <p style="margin-top: 20px;">
+            <a href="/register">Створити акаунт (Реєстрація)</a>
+        </p>
+        <p><a href="/" style="color: #7f8c8d;">← Назад до меню</a></p>
+    </form>
+</body>
+</html>

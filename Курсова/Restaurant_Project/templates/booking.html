@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .booking-container { max-width: 600px; margin: 0 auto; background: white; padding: 40px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    h2 { text-align: center; color: #2c3e50; margin-top: 0; }
+    p.subtitle { text-align: center; color: #777; margin-bottom: 30px; }
+    form { display: flex; flex-direction: column; gap: 20px; }
+    label { font-weight: bold; color: #34495e; margin-bottom: 5px; display: block; }
+    
+    input, select { 
+        width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 1em; box-sizing: border-box; 
+    }
+    
+    input[readonly] { background-color: #f0f0f0; color: #777; cursor: not-allowed; }
+
+    .time-row { display: flex; gap: 20px; }
+    .time-group { flex: 1; }
+
+    button { padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 8px; font-size: 1.1em; font-weight: bold; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #34495e; }
+</style>
+
+<div class="booking-container">
+    <h2>📅 Забронювати столик</h2>
+    <p class="subtitle">Оберіть зручний час, і ми зачекаємо на вас!</p>
+    
+    <form action="/book_table" method="POST">
+        
+        <div>
+            <label>Ваше ім'я:</label>
+            <input type="text" name="name" value="{{ session.get('name') }}" readonly required>
+        </div>
+        
+        <div>
+            <label>Телефон:</label>
+            <input type="tel" name="phone" required placeholder="Наприклад 0676666666">
+        </div>
+        
+        <div>
+            <label>Дата візиту:</label>
+            <input type="date" name="date" id="datePicker" required>
+        </div>
+        
+        <div class="time-row">
+            <div class="time-group">
+                <label>Початок:</label>
+                <select name="time_start" required>
+                    {% for h in range(10, 22) %}
+                        <option value="{{ '%02d' % h }}:00">{{ '%02d' % h }}:00</option>
+                        <option value="{{ '%02d' % h }}:30">{{ '%02d' % h }}:30</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="time-group">
+                <label>Кінець:</label>
+                <select name="time_end" required>
+                    {% for h in range(11, 23) %}
+                        <option value="{{ '%02d' % h }}:00">{{ '%02d' % h }}:00</option>
+                        <option value="{{ '%02d' % h }}:30">{{ '%02d' % h }}:30</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label>Кількість гостей:</label>
+            <input type="number" name="guests" min="1" max="10" value="2" required>
+        </div>
+
+        <button type="submit">Забронювати</button>
+    </form>
+</div>
+
+<script>
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('datePicker').setAttribute('min', today);
+</script>
+
+{% endblock %}

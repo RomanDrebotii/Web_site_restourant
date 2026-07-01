@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Реєстрація</title>
+    <style>
+        body { display: flex; justify-content: center; align-items: center; height: 100vh; background: #e9ecef; font-family: sans-serif; }
+        form { background: white; padding: 30px; border-radius: 10px; width: 300px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        input, select, button { width: 100%; padding: 10px; margin: 8px 0; border-radius: 5px; border: 1px solid #ccc; box-sizing: border-box;}
+        button { background: #28a745; color: white; border: none; cursor: pointer; font-weight: bold; }
+        button:hover { background: #218838; }
+        h2 { text-align: center; color: #333; }
+    </style>
+</head>
+<body>
+    <form method="POST">
+        <h2>Реєстрація працівника</h2>
+        
+        <label>Посада + Ім'я:</label>
+        <input type="text" name="name" placeholder="Наприклад: Шеф Зінько Іван" required>
+
+        <label>Логін:</label>
+        <input type="text" name="login" required>
+
+        <label>Пароль:</label>
+        <input type="password" name="password" required>
+
+        <label>Категорія:</label>
+        <select name="role" required style="padding: 10px; width: 100%; border: 1px solid #ccc; border-radius: 5px;">
+            <option value="client" selected>👤 Клієнт</option>
+            <option value="waiter">🟢 Офіціант</option>
+            <option value="cook">🟠 Кухар</option>
+            <option value="admin">🔴 Адміністратор</option>
+        </select>
+
+        <button type="submit">Зареєструвати</button>
+        <p style="text-align: center;"><a href="/login">Вже є акаунт? Увійти</a></p>
+    </form>
+</body>
+</html>

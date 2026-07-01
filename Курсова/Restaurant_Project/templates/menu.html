@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+    .category-nav { display: flex; justify-content: center; gap: 10px; margin-bottom: 30px; flex-wrap: wrap; }
+    
+    .cat-btn { 
+        padding: 8px 20px; 
+        border: 1px solid #ddd; 
+        border-radius: 20px; 
+        text-decoration: none; 
+        color: #555; 
+        background: white; 
+        font-weight: bold;
+        transition: 0.2s;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .cat-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+    .cat-btn.active { background: #f1c40f; color: #fff; border-color: #f1c40f; }
+    
+    .grid { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+    
+    .card { 
+        background: white; 
+        border-radius: 12px; 
+        width: 220px; 
+        padding: 10px; 
+        text-align: center; 
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05); 
+        transition: 0.2s;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.1); }
+
+    .card img { 
+        width: 100%; 
+        height: 200px; 
+        object-fit: cover; 
+        object-position: center; 
+        border-radius: 8px; 
+        margin-bottom: 8px; 
+    }
+
+    .card h3 { margin: 5px 0; font-size: 1.1em; color: #2c3e50; line-height: 1.2; }
+    .price { font-size: 1.2em; font-weight: bold; color: #27ae60; margin: 5px 0 10px 0; }
+    
+    input[type="number"] { 
+        width: 100%; 
+        padding: 8px; 
+        margin-bottom: 5px; 
+        text-align: center; 
+        box-sizing: border-box; 
+        border: 1px solid #ddd; 
+        border-radius: 6px;
+    }
+
+    .btn-order { 
+        background: #27ae60; 
+        color: white; 
+        border: none; 
+        padding: 10px; 
+        border-radius: 6px; 
+        cursor: pointer; 
+        width: 100%; 
+        font-weight: bold; 
+        transition: 0.2s;
+    }
+    .btn-order:hover { background: #219150; }
+
+    .btn-delete { 
+        background: #c0392b; 
+        color: white; 
+        display: block; 
+        margin-top: 8px; 
+        padding: 6px; 
+        text-decoration: none; 
+        border-radius: 6px; 
+        font-size: 0.8em; 
+        font-weight: bold;
+    }
+    .btn-delete:hover { background: #a93226; }
+</style>
+
+
+<div class="category-nav">
+    <a href="/" class="cat-btn {% if not current_cat %}active{% endif %}">Всі</a>
+    {% for cat in categories %}
+        <a href="/?category={{ cat }}" class="cat-btn {% if current_cat == cat %}active{% endif %}">{{ cat }}</a>
+    {% endfor %}
+</div>
+
+<div class="grid">
+    {% for dish in dishes %}
+    <div class="card">
+        <img src="{{ dish.img }}" onerror="this.onerror=null;this.src='https://via.placeholder.com/150?text=No+Image';">
+        <h3>{{ dish.name }}</h3>
+        <p class="price">{{ dish.price }} грн</p>
+        
+        <form action="/order" method="POST">
+            <input type="number" name="table_number" placeholder="Номер столу" min="1" required>
+            <input type="hidden" name="dish_name" value="{{ dish.name }}">
+            <input type="hidden" name="dish_price" value="{{ dish.price }}">
+            <button type="submit" class="btn-order">Замовити</button>
+        </form>
+
+        {% if session.get('role') == 'admin' %}
+            <a href="/delete_dish/{{ dish._id }}" class="btn-delete" onclick="return confirm('Видалити?');">🗑️ Видалити</a>
+        {% endif %}
+    </div>
+    {% else %}
+        <p>У цій категорії пусто.</p>
+    {% endfor %}
+</div>
+{% endblock %}
